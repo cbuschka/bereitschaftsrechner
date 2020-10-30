@@ -185,6 +185,7 @@ $(document).ready(function () {
     $einsatzTag.on('change', update);
     $einsatzBeginn.on('change', update);
     $einsatzEnde.on('change', update);
+    $ueblicherArbeitsbeginn.on('change', update);
 
     form.init();
     update();
