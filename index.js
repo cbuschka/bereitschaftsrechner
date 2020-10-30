@@ -73,6 +73,7 @@ $(document).ready(function () {
     const $arbeitBeginn = $('#arbeitBeginn');
     const $arbeitEnde = $('#arbeitEnde');
     const $arbeitDauer = $('#arbeitDauer');
+    const $gesamtDauer = $('#gesamtDauer');
 
     const form = {
         init: function () {
@@ -130,6 +131,9 @@ $(document).ready(function () {
         },
         ueblicherArbeitsbeginn: function () {
             return $ueblicherArbeitsbeginn.val();
+        },
+        gesamtDauer: function (v) {
+            $gesamtDauer.val(v);
         }
     };
 
@@ -147,7 +151,8 @@ $(document).ready(function () {
             sperrzeitEnde: sperrzeitEndeDatum.toTimeInputValue(),
             beginn: buchungBeginnDatum.toTimeInputValue(),
             ende: buchungEndeDatum.toTimeInputValue(),
-            dauer: millisToHhDotMm(buchungDauer)
+            dauer: millisToHhDotMm(buchungDauer),
+            gesamtDauer: millisToHhDotMm(einsatzDauerInMillis + arbeitDauerInMillis)
         };
     }
 
@@ -173,6 +178,7 @@ $(document).ready(function () {
         let buchungDauer = "";
         let sperrzeitEnde = "";
         let arbeitDauer = "00:00";
+        let gesamtDauer = "";
 
         if (einsatzTag && einsatzBeginn && einsatzEnde) {
 
@@ -193,6 +199,7 @@ $(document).ready(function () {
                 buchungEnde = buchung.ende;
                 buchungDauer = buchung.dauer;
                 sperrzeitEnde = buchung.sperrzeitEnde;
+                gesamtDauer = buchung.gesamtDauer;
             } else {
                 einsatzBeginnFehler = "Einsatz-Beginn muss vor -Ende liegen."
                 einsatzEndeFehler = "Einsatz-Ende muss nach -Beginn liegen."
@@ -209,6 +216,7 @@ $(document).ready(function () {
         form.buchungDauer(buchungDauer);
         form.sperrzeitEnde(sperrzeitEnde);
         form.arbeitDauer(arbeitDauer);
+        form.gesamtDauer(gesamtDauer);
     }
 
     $('input').change(update);
