@@ -73,7 +73,8 @@ $(document).ready(function () {
     const $arbeitBeginn = $('#arbeitBeginn');
     const $arbeitEnde = $('#arbeitEnde');
     const $arbeitDauer = $('#arbeitDauer');
-    const $gesamtDauer = $('#gesamtDauer');
+    const $gesamtDauerBrutto = $('#gesamtDauerBrutto');
+    const $gesamtDauerNetto = $('#gesamtDauerNetto');
 
     const form = {
         init: function () {
@@ -132,8 +133,11 @@ $(document).ready(function () {
         ueblicherArbeitsbeginn: function () {
             return $ueblicherArbeitsbeginn.val();
         },
-        gesamtDauer: function (v) {
-            $gesamtDauer.val(v);
+        gesamtDauerBrutto: function (v) {
+            $gesamtDauerBrutto.val(v);
+        },
+        gesamtDauerNetto: function (v) {
+            $gesamtDauerNetto.val(v);
         }
     };
 
@@ -144,15 +148,22 @@ $(document).ready(function () {
         const sperrzeitEndeDatum = berechneSperrzeitEndeDatum(einsatzEndeDatum);
         const aufschubstartDatum = max(ueblicherArbeitsbeginnDatum, einsatzEndeDatum);
         const buchungBeginnDatum = new Date(aufschubstartDatum.getTime() + einsatzDauerInMillis);
-        const buchungEndeDatum = new Date(sperrzeitEndeDatum.getTime() + arbeitDauerInMillis);
-        const buchungDauer = buchungEndeDatum - buchungBeginnDatum;
+        let pauseDauerInMillis = 0;
+        if (arbeitDauerInMillis > 0) {
+            pauseDauerInMillis = 1000 * 60 * 50;
+        }
+        const buchungEndeDatum = new Date(sperrzeitEndeDatum.getTime() + arbeitDauerInMillis + pauseDauerInMillis);
+        const gesamtDauerNetto = einsatzDauerInMillis + arbeitDauerInMillis;
+        const gesamtDauerBrutto = gesamtDauerNetto + pauseDauerInMillis;
+        let buchungDauer = buchungEndeDatum - buchungBeginnDatum;
 
         return {
             sperrzeitEnde: sperrzeitEndeDatum.toTimeInputValue(),
             beginn: buchungBeginnDatum.toTimeInputValue(),
             ende: buchungEndeDatum.toTimeInputValue(),
             dauer: millisToHhDotMm(buchungDauer),
-            gesamtDauer: millisToHhDotMm(einsatzDauerInMillis + arbeitDauerInMillis)
+            gesamtDauerNetto: millisToHhDotMm(gesamtDauerNetto),
+            gesamtDauerBrutto: millisToHhDotMm(gesamtDauerBrutto)
         };
     }
 
@@ -178,7 +189,8 @@ $(document).ready(function () {
         let buchungDauer = "";
         let sperrzeitEnde = "";
         let arbeitDauer = "00:00";
-        let gesamtDauer = "";
+        let gesamtDauerBrutto = "";
+        let gesamtDauerNetto = "";
 
         if (einsatzTag && einsatzBeginn && einsatzEnde) {
 
@@ -199,7 +211,8 @@ $(document).ready(function () {
                 buchungEnde = buchung.ende;
                 buchungDauer = buchung.dauer;
                 sperrzeitEnde = buchung.sperrzeitEnde;
-                gesamtDauer = buchung.gesamtDauer;
+                gesamtDauerBrutto = buchung.gesamtDauerBrutto;
+                gesamtDauerNetto = buchung.gesamtDauerNetto;
             } else {
                 einsatzBeginnFehler = "Einsatz-Beginn muss vor -Ende liegen."
                 einsatzEndeFehler = "Einsatz-Ende muss nach -Beginn liegen."
@@ -216,11 +229,13 @@ $(document).ready(function () {
         form.buchungDauer(buchungDauer);
         form.sperrzeitEnde(sperrzeitEnde);
         form.arbeitDauer(arbeitDauer);
-        form.gesamtDauer(gesamtDauer);
+        form.gesamtDauerBrutto(gesamtDauerBrutto);
+        form.gesamtDauerNetto(gesamtDauerNetto);
     }
 
     $('input').change(update);
 
     form.init();
     update();
-});
+})
+;
