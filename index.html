@@ -1,0 +1,86 @@
+<!doctype html>
+
+<html lang="de">
+<head>
+    <title>BU-Bereitschaftsrechner</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<section class="container">
+    <h1>BU-Bereitschaftsrechner</h1>
+    <form>
+        <div class="form-group ">
+            <label for="einsatzTag">Einsatz-Tag:</label>
+            <input type="date" class="form-control" id="einsatzTag"/>
+        </div>
+
+        <div class="form-group">
+            <output readonly class="text-danger" type="text" id="einsatzTagFehler"/>
+        </div>
+
+        <div class="form-group ">
+            <label for="einsatzBeginn">Einsatz-Beginn:</label>
+            <input type="time" class="form-control" id="einsatzBeginn"/>
+        </div>
+
+        <div class="form-group">
+            <output class="text-danger" readonly type="text" id="einsatzBeginnFehler"/>
+        </div>
+
+        <div class="form-group">
+            <label for="einsatzEnde">Einsatz-Ende:</label>
+            <input type="time" class="form-control" id="einsatzEnde"/>
+        </div>
+
+        <div class="form-group">
+            <output readonly class="text-danger" type="text" id="einsatzEndeFehler"/>
+        </div>
+
+        <div class="form-group">
+            <label for="einsatzDauer">Einsatz Dauer:</label>
+            <output readonly type="time" class="form-control" id="einsatzDauer"/>
+        </div>
+
+        <div class="form-group">
+            <output readonly class="text-danger" type="text" id="einsatzFehler"/>
+        </div>
+
+        <div class="form-group">
+            <label for="ueblicherArbeitsbeginn">Üblicher Arbeitsbeginn:</label>
+            <input type="time" class="form-control" id="ueblicherArbeitsbeginn"/>
+        </div>
+
+        <div class="form-group">
+            <output readonly class="text-danger" type="text" id="ueblicherArbeitsbeginnFehler"/>
+        </div>
+
+        <div class="form-group">
+            <label for="sperrzeitEnde">Sperrzeit-Ende:</label>
+            <output readonly type="time" class="form-control" id="sperrzeitEnde"/>
+        </div>
+
+        <div class="form-group">
+            <label for="buchungBeginn">Buchung-Beginn:</label>
+            <output readonly type="time" class="form-control" id="buchungBeginn"/>
+        </div>
+
+        <div class="form-group">
+            <label for="buchungEnde">Buchung-Ende:</label>
+            <output readonly type="time" class="form-control" id="buchungEnde"/>
+        </div>
+
+        <div class="form-group">
+            <label for="buchungDauer">Buchung-Dauer:</label>
+            <output readonly type="time" class="form-control" id="buchungDauer"/>
+        </div>
+    </form>
+</section>
+</body>
+<script
+        src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="./index.js"></script>
+</html>
