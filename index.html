@@ -9,70 +9,89 @@
 
 <section class="container">
     <h1>Bereitschaftsrechner</h1>
-    <form>
-        <div class="form-group ">
-            <label for="einsatzTag">Einsatz-Tag:</label>
-            <input type="date" class="form-control" id="einsatzTag"/>
+    <form class="form">
+        <h4>Einsatz</h4>
+        <div class="row">
+            <div class="col">
+                <div class="form-group ">
+                    <label for="einsatzTag">Tag:</label>
+                    <input type="date" class="form-control" id="einsatzTag"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group ">
+                    <label for="einsatzBeginn">Beginn:</label>
+                    <input type="time" class="form-control" id="einsatzBeginn"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="einsatzEnde">Ende:</label>
+                    <input type="time" class="form-control" id="einsatzEnde"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="einsatzDauer">Dauer:</label>
+                    <output readonly type="time" class="form-control" id="einsatzDauer"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <output readonly class="text-danger" type="text" id="einsatzTagFehler"/>
+                <output readonly class="text-danger" type="text" id="einsatzBeginnFehler"/>
+                <output readonly class="text-danger" type="text" id="einsatzEndeFehler"/>
+                <output readonly class="text-danger" type="text" id="einsatzFehler"/>
+            </div>
         </div>
 
-        <div class="form-group">
-            <output readonly class="text-danger" type="text" id="einsatzTagFehler"/>
+        <hr>
+        <h4>Arbeit (nach dem Einsatz)</h4>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="sperrzeitEnde">Sperrzeit-Ende:</label>
+                    <output readonly type="time" class="form-control" id="sperrzeitEnde"/>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group ">
-            <label for="einsatzBeginn">Einsatz-Beginn:</label>
-            <input type="time" class="form-control" id="einsatzBeginn"/>
+        <hr>
+        <h4>Verbuchung</h4>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="ueblicherArbeitsbeginn">Üblicher Arbeitsbeginn:</label>
+                    <input type="time" class="form-control" id="ueblicherArbeitsbeginn"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <output readonly class="text-danger" type="text" id="ueblicherArbeitsbeginnFehler"/>
+            </div>
         </div>
 
-        <div class="form-group">
-            <output class="text-danger" readonly type="text" id="einsatzBeginnFehler"/>
-        </div>
-
-        <div class="form-group">
-            <label for="einsatzEnde">Einsatz-Ende:</label>
-            <input type="time" class="form-control" id="einsatzEnde"/>
-        </div>
-
-        <div class="form-group">
-            <output readonly class="text-danger" type="text" id="einsatzEndeFehler"/>
-        </div>
-
-        <div class="form-group">
-            <label for="einsatzDauer">Einsatz Dauer:</label>
-            <output readonly type="time" class="form-control" id="einsatzDauer"/>
-        </div>
-
-        <div class="form-group">
-            <output readonly class="text-danger" type="text" id="einsatzFehler"/>
-        </div>
-
-        <div class="form-group">
-            <label for="ueblicherArbeitsbeginn">Üblicher Arbeitsbeginn:</label>
-            <input type="time" class="form-control" id="ueblicherArbeitsbeginn"/>
-        </div>
-
-        <div class="form-group">
-            <output readonly class="text-danger" type="text" id="ueblicherArbeitsbeginnFehler"/>
-        </div>
-
-        <div class="form-group">
-            <label for="sperrzeitEnde">Sperrzeit-Ende:</label>
-            <output readonly type="time" class="form-control" id="sperrzeitEnde"/>
-        </div>
-
-        <div class="form-group">
-            <label for="buchungBeginn">Buchung-Beginn:</label>
-            <output readonly type="time" class="form-control" id="buchungBeginn"/>
-        </div>
-
-        <div class="form-group">
-            <label for="buchungEnde">Buchung-Ende:</label>
-            <output readonly type="time" class="form-control" id="buchungEnde"/>
-        </div>
-
-        <div class="form-group">
-            <label for="buchungDauer">Buchung-Dauer:</label>
-            <output readonly type="time" class="form-control" id="buchungDauer"/>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="buchungBeginn">Buchung-Beginn:</label>
+                    <output readonly type="time" class="form-control" id="buchungBeginn"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="buchungEnde">Buchung-Ende:</label>
+                    <output readonly type="time" class="form-control" id="buchungEnde"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="buchungDauer">Buchung-Dauer:</label>
+                    <output readonly type="time" class="form-control" id="buchungDauer"/>
+                </div>
+            </div>
         </div>
     </form>
 </section>
