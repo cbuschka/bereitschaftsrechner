@@ -3,7 +3,7 @@ function zeroPadded(d) {
         return d;
     }
 
-    if (d < 10) {
+    if (d >= 0 && d < 10) {
         return "0" + d;
     }
 
@@ -50,6 +50,7 @@ Date.prototype.toTimeInputValue = (function () {
     return local.toJSON().slice(11, 16);
 });
 
+
 function berechneSperrzeitEndeDatum(einsatzEndeDatum) {
     return new Date(einsatzEndeDatum.getTime() + hhDotMmtoMillis("11:00"));
 }
@@ -69,6 +70,9 @@ $(document).ready(function () {
     const $sperrzeitEnde = $('#sperrzeitEnde');
     const $buchungEnde = $('#buchungEnde');
     const $buchungDauer = $('#buchungDauer');
+    const $arbeitBeginn = $('#arbeitBeginn');
+    const $arbeitEnde = $('#arbeitEnde');
+    const $arbeitDauer = $('#arbeitDauer');
 
     const form = {
         init: function () {
@@ -76,6 +80,8 @@ $(document).ready(function () {
             $einsatzBeginn.val("00:45");
             $einsatzEnde.val("08:00");
             $ueblicherArbeitsbeginn.val('06:30');
+            $arbeitBeginn.val("00:00");
+            $arbeitEnde.val("00:00");
         },
         sperrzeitEnde: function (v) {
             $sperrzeitEnde.val(v);
@@ -104,6 +110,15 @@ $(document).ready(function () {
         einsatzDauer: function (v) {
             $einsatzDauer.val(v);
         },
+        arbeitBeginn: function () {
+            return $arbeitBeginn.val();
+        },
+        arbeitEnde: function () {
+            return $arbeitEnde.val();
+        },
+        arbeitDauer: function (v) {
+            $arbeitDauer.val(v);
+        },
         buchungBeginn: function (v) {
             return $buchungBeginn.val(v);
         },
@@ -112,22 +127,27 @@ $(document).ready(function () {
         },
         buchungDauer: function (v) {
             $buchungDauer.val(v);
+        },
+        ueblicherArbeitsbeginn: function () {
+            return $ueblicherArbeitsbeginn.val();
         }
     };
 
-    function berechneBuchung(einsatzStartDatum, einsatzEndeDatum, ueblicherArbeitsbeginn) {
+    function berechneBuchung(einsatzStartDatum, einsatzEndeDatum, ueblicherArbeitsbeginn, arbeitDauerInMillis) {
         const einsatzDauerInMillis = einsatzEndeDatum - einsatzStartDatum;
         const einsatzTag = einsatzStartDatum.toDateInputValue();
         const ueblicherArbeitsbeginnDatum = new Date(`${einsatzTag} ${ueblicherArbeitsbeginn}`);
         const sperrzeitEndeDatum = berechneSperrzeitEndeDatum(einsatzEndeDatum);
         const aufschubstartDatum = max(ueblicherArbeitsbeginnDatum, einsatzEndeDatum);
         const buchungBeginnDatum = new Date(aufschubstartDatum.getTime() + einsatzDauerInMillis);
+        const buchungEndeDatum = new Date(sperrzeitEndeDatum.getTime() + arbeitDauerInMillis);
+        const buchungDauer = buchungEndeDatum - buchungBeginnDatum;
 
         return {
             sperrzeitEnde: sperrzeitEndeDatum.toTimeInputValue(),
             beginn: buchungBeginnDatum.toTimeInputValue(),
-            ende: sperrzeitEndeDatum.toTimeInputValue(),
-            dauer: millisToHhDotMm(einsatzDauerInMillis)
+            ende: buchungEndeDatum.toTimeInputValue(),
+            dauer: millisToHhDotMm(buchungDauer)
         };
     }
 
@@ -135,6 +155,9 @@ $(document).ready(function () {
         const einsatzTag = form.einsatzTag();
         const einsatzBeginn = form.einsatzBeginn();
         const einsatzEnde = form.einsatzEnde();
+        const arbeitBeginn = form.arbeitBeginn();
+        const arbeitEnde = form.arbeitEnde();
+        const ueblicherArbeitsbeginn = form.ueblicherArbeitsbeginn();
 
         let einsatzTagFehler = "";
         if (!einsatzTag) {
@@ -149,9 +172,15 @@ $(document).ready(function () {
         let buchungEnde = "";
         let buchungDauer = "";
         let sperrzeitEnde = "";
-
+        let arbeitDauer = "00:00";
 
         if (einsatzTag && einsatzBeginn && einsatzEnde) {
+
+            if (arbeitBeginn && arbeitEnde) {
+                arbeitBeginnDatum = new Date(`${einsatzTag} ${arbeitBeginn}`);
+                arbeitEndeDatum = new Date(`${einsatzTag} ${arbeitEnde}`);
+                arbeitDauer = millisToHhDotMm(arbeitEndeDatum - arbeitBeginnDatum);
+            }
 
             if (einsatzBeginn < einsatzEnde) {
                 const einsatzStartDatum = new Date(`${einsatzTag} ${einsatzBeginn}`);
@@ -159,8 +188,7 @@ $(document).ready(function () {
                 const einsatzDauerInMillis = einsatzEndeDatum - einsatzStartDatum;
                 einsatzDauer = millisToHhDotMm(einsatzDauerInMillis);
 
-                const buchung = berechneBuchung(einsatzStartDatum, einsatzEndeDatum, $ueblicherArbeitsbeginn.val());
-                console.log("%o", buchung)
+                const buchung = berechneBuchung(einsatzStartDatum, einsatzEndeDatum, ueblicherArbeitsbeginn, hhDotMmtoMillis(arbeitDauer));
                 buchungBeginn = buchung.beginn;
                 buchungEnde = buchung.ende;
                 buchungDauer = buchung.dauer;
@@ -180,12 +208,10 @@ $(document).ready(function () {
         form.buchungEnde(buchungEnde);
         form.buchungDauer(buchungDauer);
         form.sperrzeitEnde(sperrzeitEnde);
+        form.arbeitDauer(arbeitDauer);
     }
 
-    $einsatzTag.on('change', update);
-    $einsatzBeginn.on('change', update);
-    $einsatzEnde.on('change', update);
-    $ueblicherArbeitsbeginn.on('change', update);
+    $('input').change(update);
 
     form.init();
     update();
