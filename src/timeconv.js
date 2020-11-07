@@ -20,3 +20,8 @@ export function hhDotMmtoMillis(hhDotMm) {
     return parseInt(result[1]) * 1000 * 60 * 60 + parseInt(result[2]) * 1000 * 60;
 }
 
+export function dateToTimeInputValue(d) {
+    var local = new Date(d);
+    local.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return local.toJSON().slice(11, 16);
+}

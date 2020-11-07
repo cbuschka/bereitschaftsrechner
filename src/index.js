@@ -1,8 +1,8 @@
 import * as $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
-import './Date.js';
 import {max} from "./util";
-import {hhDotMmtoMillis, millisToHhDotMm} from "./timeconv";
+import {hhDotMmtoMillis, millisToHhDotMm, dateToTimeInputValue} from "./timeconv";
+import {dateToDateInputValue} from "./dateconv";
 
 function berechneSperrzeitEndeDatum(einsatzEndeDatum) {
     return new Date(einsatzEndeDatum.getTime() + hhDotMmtoMillis("11:00"));
@@ -96,7 +96,7 @@ $(document).ready(function () {
 
     function berechneBuchung(einsatzStartDatum, einsatzEndeDatum, ueblicherArbeitsbeginn, arbeitDauerInMillis) {
         const einsatzDauerInMillis = einsatzEndeDatum - einsatzStartDatum;
-        const einsatzTag = einsatzStartDatum.toDateInputValue();
+        const einsatzTag = dateToDateInputValue(einsatzStartDatum);
         const ueblicherArbeitsbeginnDatum = new Date(`${einsatzTag} ${ueblicherArbeitsbeginn}`);
         const sperrzeitEndeDatum = berechneSperrzeitEndeDatum(einsatzEndeDatum);
         const aufschubstartDatum = max(ueblicherArbeitsbeginnDatum, einsatzEndeDatum);
@@ -111,9 +111,9 @@ $(document).ready(function () {
         let buchungDauer = buchungEndeDatum - buchungBeginnDatum;
 
         return {
-            sperrzeitEnde: sperrzeitEndeDatum.toTimeInputValue(),
-            beginn: buchungBeginnDatum.toTimeInputValue(),
-            ende: buchungEndeDatum.toTimeInputValue(),
+            sperrzeitEnde: dateToTimeInputValue(sperrzeitEndeDatum),
+            beginn: dateToTimeInputValue(buchungBeginnDatum),
+            ende: dateToTimeInputValue(buchungEndeDatum),
             dauer: millisToHhDotMm(buchungDauer),
             gesamtDauerNetto: millisToHhDotMm(gesamtDauerNetto),
             gesamtDauerBrutto: millisToHhDotMm(gesamtDauerBrutto)
