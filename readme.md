@@ -1,4 +1,5 @@
 # Bereitschaftsrechner
+[![Build](https://github.com/cbuschka/bereitschaftsrechner/workflows/build/badge.svg)](https://github.com/cbuschka/bereitschaftsrechner) [![License](https://img.shields.io/github/license/cbuschka/bereitschaftsrechner.svg)](https://github.com/cbuschka/bereitschaftsrechner/blob/main/license.txt)
 
 ## What's inside?
 * proprietary time calculation
