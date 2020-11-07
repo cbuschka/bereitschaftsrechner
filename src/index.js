@@ -1,13 +1,7 @@
 import * as $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
-import {max} from "./util";
-import {hhDotMmtoMillis, millisToHhDotMm, dateToTimeInputValue} from "./timeconv";
-import {dateToDateInputValue} from "./dateconv";
-
-function berechneSperrzeitEndeDatum(einsatzEndeDatum) {
-    return new Date(einsatzEndeDatum.getTime() + hhDotMmtoMillis("11:00"));
-}
-
+import {hhDotMmtoMillis, millisToHhDotMm} from "./timeconv";
+import {model} from "./model";
 
 $(document).ready(function () {
     const $einsatzTag = $('#einsatzTag');
@@ -94,32 +88,6 @@ $(document).ready(function () {
         }
     };
 
-    function berechneBuchung(einsatzStartDatum, einsatzEndeDatum, ueblicherArbeitsbeginn, arbeitDauerInMillis) {
-        const einsatzDauerInMillis = einsatzEndeDatum - einsatzStartDatum;
-        const einsatzTag = dateToDateInputValue(einsatzStartDatum);
-        const ueblicherArbeitsbeginnDatum = new Date(`${einsatzTag} ${ueblicherArbeitsbeginn}`);
-        const sperrzeitEndeDatum = berechneSperrzeitEndeDatum(einsatzEndeDatum);
-        const aufschubstartDatum = max(ueblicherArbeitsbeginnDatum, einsatzEndeDatum);
-        const buchungBeginnDatum = new Date(aufschubstartDatum.getTime() + einsatzDauerInMillis);
-        let pauseDauerInMillis = 0;
-        if (arbeitDauerInMillis > 0) {
-            pauseDauerInMillis = 1000 * 60 * 50;
-        }
-        const buchungEndeDatum = new Date(sperrzeitEndeDatum.getTime() + arbeitDauerInMillis + pauseDauerInMillis);
-        const gesamtDauerNetto = einsatzDauerInMillis + arbeitDauerInMillis;
-        const gesamtDauerBrutto = gesamtDauerNetto + pauseDauerInMillis;
-        let buchungDauer = buchungEndeDatum - buchungBeginnDatum;
-
-        return {
-            sperrzeitEnde: dateToTimeInputValue(sperrzeitEndeDatum),
-            beginn: dateToTimeInputValue(buchungBeginnDatum),
-            ende: dateToTimeInputValue(buchungEndeDatum),
-            dauer: millisToHhDotMm(buchungDauer),
-            gesamtDauerNetto: millisToHhDotMm(gesamtDauerNetto),
-            gesamtDauerBrutto: millisToHhDotMm(gesamtDauerBrutto)
-        };
-    }
-
     function update() {
         const einsatzTag = form.einsatzTag();
         const einsatzBeginn = form.einsatzBeginn();
@@ -159,7 +127,12 @@ $(document).ready(function () {
                 const einsatzDauerInMillis = einsatzEndeDatum - einsatzStartDatum;
                 einsatzDauer = millisToHhDotMm(einsatzDauerInMillis);
 
-                const buchung = berechneBuchung(einsatzStartDatum, einsatzEndeDatum, ueblicherArbeitsbeginn, hhDotMmtoMillis(arbeitDauer));
+                model.einsatzStartDatum = einsatzStartDatum;
+                model.einsatzEndeDatum = einsatzEndeDatum;
+                model.ueblicherArbeitsbeginn = ueblicherArbeitsbeginn;
+                model.arbeitDauerInMillis = hhDotMmtoMillis(arbeitDauer);
+                const buchung = model.berechneBuchung();
+
                 buchungBeginn = buchung.beginn;
                 buchungEnde = buchung.ende;
                 buchungDauer = buchung.dauer;
