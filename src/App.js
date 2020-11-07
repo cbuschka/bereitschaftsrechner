@@ -7,6 +7,7 @@ import {dispatcher} from "@cbuschka/flux";
 import {TimeOutput} from "./TimeOutput";
 import {changeField} from "./changeFieldAction";
 import {model} from "./model";
+import {MessagePanel} from "./MessagePanel";
 
 export class App extends React.Component {
 
@@ -19,7 +20,9 @@ export class App extends React.Component {
     onChange = ({data}) => {
         const {
             calculator: {
-                einsatzTag, einsatzBeginn, einsatzEnde, einsatzDauer, ueblicherArbeitsbeginn,
+                einsatzTag, einsatzBeginn, einsatzEnde, einsatzDauer, einsatzMessages,
+                ueblicherArbeitsbeginn,
+                ueblicherArbeitsbeginnMessages,
                 arbeitBeginn, arbeitEnde, arbeitDauer,
                 sperrzeitEnde,
                 buchungBeginn,
@@ -31,7 +34,9 @@ export class App extends React.Component {
         } = data;
 
         this.setState({
-            einsatzTag, einsatzBeginn, einsatzEnde, einsatzDauer, ueblicherArbeitsbeginn,
+            einsatzTag, einsatzBeginn, einsatzEnde, einsatzDauer,
+            ueblicherArbeitsbeginn, ueblicherArbeitsbeginnMessages,
+            einsatzMessages,
             arbeitBeginn, arbeitEnde, arbeitDauer,
             sperrzeitEnde,
             buchungBeginn,
@@ -55,8 +60,9 @@ export class App extends React.Component {
     render() {
         const {
             einsatzTag, einsatzBeginn, einsatzEnde, einsatzDauer,
+            einsatzMessages,
             sperrzeitEnde, arbeitBeginn, arbeitEnde, arbeitDauer,
-            ueblicherArbeitsbeginn,
+            ueblicherArbeitsbeginn, ueblicherArbeitsbeginnMessages,
             buchungBeginn, buchungEnde, buchungDauer,
             gesamtDauerNetto, gesamtDauerBrutto
         } = this.state;
@@ -100,15 +106,7 @@ export class App extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col">
-                                <output readOnly className="text-danger" type="text" id="einsatzTagFehler"/>
-                                <output readOnly className="text-danger" type="text" id="einsatzBeginnFehler"/>
-                                <output readOnly className="text-danger" type="text" id="einsatzEndeFehler"/>
-                                <output readOnly className="text-danger" type="text" id="einsatzFehler"/>
-                            </div>
-                        </div>
-
+                        <MessagePanel items={einsatzMessages}/>
                         <hr/>
                         <h4>Arbeit (nach dem Einsatz)</h4>
                         <div className="row">
@@ -152,15 +150,10 @@ export class App extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        <MessagePanel items={ueblicherArbeitsbeginnMessages}/>
 
                         <hr/>
                         <h4>Verbuchung</h4>
-                        <div className="row">
-                            <div className="col">
-                                <output readOnly className="text-danger" type="text"
-                                        id="ueblicherArbeitsbeginnFehler"/>
-                            </div>
-                        </div>
 
                         <div className="row">
                             <div className="col">

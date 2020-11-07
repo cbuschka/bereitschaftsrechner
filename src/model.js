@@ -20,6 +20,8 @@ class Model {
     }
 
     appendDataTo(target) {
+        const einsatzMessages = [];
+        const ueblicherArbeitsbeginnMessages = [];
         const einsatzTagDate = yyyyMmDdToDate(this.data.einsatzTag);
         const einsatzStartDatum = dateWithTimeToDate(einsatzTagDate, this.data.einsatzBeginn);
         const einsatzEndeDatum = dateWithTimeToDate(einsatzTagDate, this.data.einsatzEnde);
@@ -30,6 +32,19 @@ class Model {
         if (arbeitBeginnDatum && arbeitEndeDatum) {
             arbeitDauer = millisToHhDotMm(arbeitEndeDatum - arbeitBeginnDatum);
         }
+        if (!einsatzTagDate) {
+            einsatzMessages.push({type: "danger", text: "Einsatz-Tag erforderlich."});
+        }
+        if (einsatzTagDate && !einsatzStartDatum) {
+            einsatzMessages.push({type: "danger", text: "Einsatz-Beginn erforderlich."});
+        }
+        if (einsatzTagDate && !einsatzEndeDatum) {
+            einsatzMessages.push({type: "danger", text: "Einsatz-Ende erforderlich."});
+        }
+        if (!ueblicherArbeitsbeginn) {
+            ueblicherArbeitsbeginnMessages.push({type: "danger", text: "Üblicher-Arbeitsbeginn erforderlich."});
+        }
+
         if (einsatzStartDatum && einsatzEndeDatum && ueblicherArbeitsbeginn) {
             const {
                 sperrzeitEnde,
@@ -50,9 +65,11 @@ class Model {
                 buchungEnde,
                 buchungDauer,
                 einsatzDauer,
+                einsatzMessages,
                 gesamtDauerBrutto,
                 gesamtDauerNetto,
-                arbeitDauer
+                arbeitDauer,
+                ueblicherArbeitsbeginnMessages
             };
         } else {
             target.calculator = {
@@ -64,7 +81,9 @@ class Model {
                 einsatzDauer: "",
                 gesamtDauerBrutto: "",
                 gesamtDauerNetto: "",
-                arbeitDauer: ""
+                arbeitDauer: "",
+                einsatzMessages,
+                ueblicherArbeitsbeginnMessages
             };
         }
     }
