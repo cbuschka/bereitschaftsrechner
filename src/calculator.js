@@ -2,6 +2,10 @@ import {max} from "./util";
 import {dateToTimeInputValue, hhDotMmtoMillis, millisToHhDotMm} from "./timeconv";
 import {dateWithTimeToDate} from "./datetimeconv";
 
+const SIX_HOURS_IN_MILLIS = 1000 * 60 * 60 * 6;
+const FIFTY_MINUTES_IN_MILLS = 1000 * 60 * 50;
+const TWENTY_MINUTES_IN_MILLS = 1000 * 60 * 50;
+
 function berechneSperrzeitEndeDatum(einsatzEndeDatum) {
     return new Date(einsatzEndeDatum.getTime() + hhDotMmtoMillis("11:00"));
 }
@@ -19,8 +23,10 @@ class Calculator {
         const aufschubstartDatum = max(ueblicherArbeitsbeginnDatum, einsatzEndeDatum);
         const buchungBeginnDatum = new Date(aufschubstartDatum.getTime() + einsatzDauerInMillis);
         let pauseDauerInMillis = 0;
-        if (arbeitDauerInMillis > 0) {
-            pauseDauerInMillis = 1000 * 60 * 50;
+        if (arbeitDauerInMillis > SIX_HOURS_IN_MILLIS) {
+            pauseDauerInMillis = FIFTY_MINUTES_IN_MILLS;
+        } else {
+            pauseDauerInMillis = TWENTY_MINUTES_IN_MILLS;
         }
         const buchungEndeDatum = new Date(sperrzeitEndeDatum.getTime() + arbeitDauerInMillis + pauseDauerInMillis);
         const gesamtDauerNetto = einsatzDauerInMillis + arbeitDauerInMillis;
@@ -34,7 +40,8 @@ class Calculator {
             buchungDauer: millisToHhDotMm(buchungDauerInMillis),
             einsatzDauer: millisToHhDotMm(einsatzDauerInMillis),
             gesamtDauerNetto: millisToHhDotMm(gesamtDauerNetto),
-            gesamtDauerBrutto: millisToHhDotMm(gesamtDauerBrutto)
+            gesamtDauerBrutto: millisToHhDotMm(gesamtDauerBrutto),
+            pauseDauer: millisToHhDotMm(pauseDauerInMillis)
         };
         return result;
     }

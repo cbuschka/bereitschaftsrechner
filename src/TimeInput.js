@@ -24,7 +24,7 @@ export class TimeInput extends React.Component {
         }
 
         return <Input placeholder="HH:MM"
-                      className={classnames()}
+                      className={classnames(className)}
                       onChange={this.onChange}
                       id={id} value={value}/>;
     }
