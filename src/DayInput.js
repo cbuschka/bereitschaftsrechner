@@ -1,6 +1,8 @@
 import React from 'react';
 import {isDate} from "./datetimeconv";
 import {dateToYyyyMmDd} from "./dateconv";
+import classnames from 'classnames';
+import {Input} from "reactstrap";
 
 export class DayInput extends React.Component {
 
@@ -14,16 +16,16 @@ export class DayInput extends React.Component {
     };
 
     render() {
-        const {id} = this.props;
+        const {id, className = ""} = this.props;
         let {value = ""} = this.props;
 
         if (isDate(value)) {
             value = dateToYyyyMmDd(value);
         }
 
-        return <input type="date"
-                      className="form-control"
+        return <Input placeholder='YYYY-MM-DD'
+                      className={classnames(className)}
                       onChange={this.onChange}
-                      id={id} value={value}/>
+                      id={id} value={value}/>;
     }
 }

@@ -70,13 +70,15 @@ export class App extends React.Component {
                     <Form>
                         <h4>Einsatz</h4>
                         <div className="row">
-                            <div className="col">
+                            <div className="col col-4">
                                 <div className="form-group ">
                                     <label htmlFor="einsatzTag">Tag:</label>
                                     <DayInput id="einsatzTag" value={einsatzTag}
                                               onChange={this.onEinsatzTagChanged}/>
                                 </div>
                             </div>
+                        </div>
+                        <div className="row">
                             <div className="col">
                                 <div className="form-group ">
                                     <label htmlFor="einsatzBeginn">Beginn:</label>
@@ -116,6 +118,8 @@ export class App extends React.Component {
                                     <TimeOutput id="sperrzeitEnde" value={sperrzeitEnde}/>
                                 </div>
                             </div>
+                        </div>
+                        <div className="row">
                             <div className="col">
                                 <div className="form-group ">
                                     <label htmlFor="arbeitBeginn">Beginn:</label>
@@ -139,7 +143,6 @@ export class App extends React.Component {
                         </div>
 
                         <hr/>
-                        <h4>Verbuchung</h4>
                         <div className="row">
                             <div className="col-3">
                                 <div className="form-group">
@@ -149,6 +152,9 @@ export class App extends React.Component {
                                 </div>
                             </div>
                         </div>
+
+                        <hr/>
+                        <h4>Verbuchung</h4>
                         <div className="row">
                             <div className="col">
                                 <output readOnly className="text-danger" type="text"
@@ -159,19 +165,19 @@ export class App extends React.Component {
                         <div className="row">
                             <div className="col">
                                 <div className="form-group">
-                                    <label htmlFor="buchungBeginn">Buchung-Beginn:</label>
+                                    <label htmlFor="buchungBeginn">Beginn:</label>
                                     <TimeOutput readOnly id="buchungBeginn" value={buchungBeginn}/>
                                 </div>
                             </div>
                             <div className="col">
                                 <div className="form-group">
-                                    <label htmlFor="buchungEnde">Buchung-Ende:</label>
+                                    <label htmlFor="buchungEnde">Ende:</label>
                                     <TimeOutput value={buchungEnde} id="buchungEnde"/>
                                 </div>
                             </div>
                             <div className="col">
                                 <div className="form-group">
-                                    <label htmlFor="buchungDauer">Buchung-Dauer:</label>
+                                    <label htmlFor="buchungDauer">Dauer:</label>
                                     <DurationOutput value={buchungDauer} id="buchungDauer"/>
                                 </div>
                             </div>

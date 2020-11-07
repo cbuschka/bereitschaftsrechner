@@ -1,6 +1,8 @@
 import React from 'react';
 import {isDate} from "./datetimeconv";
 import {dateToHhMm} from "./timeconv";
+import classnames from 'classnames';
+import {Input} from "reactstrap";
 
 export class TimeInput extends React.Component {
 
@@ -14,15 +16,16 @@ export class TimeInput extends React.Component {
     };
 
     render() {
-        const {id} = this.props;
+        const {id, className = ""} = this.props;
         let {value = ""} = this.props;
 
         if (isDate(value)) {
             value = dateToHhMm(value);
         }
 
-        return <input type="time" className="form-control"
+        return <Input placeholder="HH:MM"
+                      className={classnames()}
                       onChange={this.onChange}
-                      id={id} value={value}/>
+                      id={id} value={value}/>;
     }
 }

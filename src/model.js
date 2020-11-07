@@ -11,7 +11,7 @@ class Model {
             einsatzEnde: "06:45",
             ueblicherArbeitsbeginn: "06:30",
             arbeitBeginn: "15:00",
-            arbeitEnd: "17:00"
+            arbeitEnde: "17:00"
         };
     }
 
