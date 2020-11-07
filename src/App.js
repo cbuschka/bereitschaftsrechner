@@ -67,12 +67,11 @@ export class App extends React.Component {
             buchungBeginn, buchungEnde, buchungDauer
         } = this.state;
 
-
         return (
             <div className="App">
                 <Container tag="section">
+                    <p className="float-right"><small>(Version: {process.env.__VERSION__ || "undefined"})</small></p>
                     <h1>Bereitschaftsrechner</h1>
-                    <p><small>(Alle Angaben ohne Gewähr!)</small></p>
                     <Form>
                         <h4>Einsatz</h4>
                         <div className="row well">
@@ -154,7 +153,6 @@ export class App extends React.Component {
 
                         <hr/>
                         <h4>Verbuchung</h4>
-
                         <div className="row">
                             <div className="col">
                                 <div className="form-group">
@@ -175,8 +173,10 @@ export class App extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        <p><small>(Alle Angaben ohne Gewähr!)</small></p>
                     </Form>
                 </Container>
+
             </div>
         );
     }
