@@ -9,6 +9,8 @@ import {changeField} from "./changeFieldAction";
 import {model} from "./model";
 import {MessagePanel} from "./MessagePanel";
 import './App.css';
+import {GithubIcon} from "./GithubIcon";
+
 
 export class App extends React.Component {
 
@@ -70,11 +72,21 @@ export class App extends React.Component {
         return (
             <div className="App">
                 <Container tag="section">
-                    <p className="float-right"><small>(Version: {process.env.__VERSION__ || "undefined"})</small></p>
                     <h1>Bereitschaftsrechner</h1>
+                    <div className="row">
+                        <div className="col col-6 offset-6">
+                            <div className="float-right">
+                                <small>(Version: {process.env.__VERSION__ || "undefined"})</small>
+                                <a
+                                    href="https://github.com/cbuschka/bereitschaftsrechner/" target="_blank"
+                                    rel="noopener noreferrer"> <GithubIcon/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <Form>
                         <h4>Einsatz</h4>
-                        <div className="row well">
+                        <div className="row">
                             <div className="col col-4">
                                 <div className="form-group">
                                     <label htmlFor="einsatzTag">Tag:</label>
