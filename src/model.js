@@ -1,17 +1,17 @@
 import {calculator} from "./calculator";
 import {hhDotMmtoMillis, millisToHhDotMm} from "./timeconv";
 import {dateWithTimeToDate} from "./datetimeconv";
-import {yyyyMmDdToDate} from "./dateconv";
+import {dateToDateInputValue, yyyyMmDdToDate} from "./dateconv";
 
 class Model {
     constructor() {
         this.data = {
-            einsatzTag: "2020-11-01",
-            einsatzBeginn: "01:45",
-            einsatzEnde: "06:45",
-            ueblicherArbeitsbeginn: "06:30",
-            arbeitBeginn: "15:00",
-            arbeitEnde: "17:00"
+            einsatzTag: dateToDateInputValue(new Date()),
+            einsatzBeginn: "00:15",
+            einsatzEnde: "02:15",
+            ueblicherArbeitsbeginn: "07:30",
+            arbeitBeginn: "15:05",
+            arbeitEnde: "16:05"
         };
     }
 
