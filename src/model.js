@@ -1,44 +1,72 @@
-import {dateToDateInputValue} from "./dateconv";
-import {max} from "./util";
-import {dateToTimeInputValue, hhDotMmtoMillis, millisToHhDotMm} from "./timeconv";
-
-function berechneSperrzeitEndeDatum(einsatzEndeDatum) {
-    return new Date(einsatzEndeDatum.getTime() + hhDotMmtoMillis("11:00"));
-}
-
+import {calculator} from "./calculator";
+import {hhDotMmtoMillis, millisToHhDotMm} from "./timeconv";
+import {dateWithTimeToDate} from "./datetimeconv";
+import {yyyyMmDdToDate} from "./dateconv";
 
 class Model {
     constructor() {
-        this.einsatzStartDatum = undefined;
-        this.einsatzEndeDatum = undefined;
-        this.ueblicherArbeitsbeginn = undefined;
-        this.arbeitDauerInMillis = undefined;
+        this.data = {
+            einsatzTag: "2020-11-01",
+            einsatzBeginn: "01:45",
+            einsatzEnde: "06:45",
+            ueblicherArbeitsbeginn: "06:30",
+            arbeitBeginn: "15:00",
+            arbeitEnd: "17:00"
+        };
     }
 
-    berechneBuchung() {
-        const einsatzDauerInMillis = this.einsatzEndeDatum - this.einsatzStartDatum;
-        const einsatzTag = dateToDateInputValue(this.einsatzStartDatum);
-        const ueblicherArbeitsbeginnDatum = new Date(`${einsatzTag} ${this.ueblicherArbeitsbeginn}`);
-        const sperrzeitEndeDatum = berechneSperrzeitEndeDatum(this.einsatzEndeDatum);
-        const aufschubstartDatum = max(ueblicherArbeitsbeginnDatum, this.einsatzEndeDatum);
-        const buchungBeginnDatum = new Date(aufschubstartDatum.getTime() + einsatzDauerInMillis);
-        let pauseDauerInMillis = 0;
-        if (this.arbeitDauerInMillis > 0) {
-            pauseDauerInMillis = 1000 * 60 * 50;
-        }
-        const buchungEndeDatum = new Date(sperrzeitEndeDatum.getTime() + this.arbeitDauerInMillis + pauseDauerInMillis);
-        const gesamtDauerNetto = einsatzDauerInMillis + this.arbeitDauerInMillis;
-        const gesamtDauerBrutto = gesamtDauerNetto + pauseDauerInMillis;
-        let buchungDauer = buchungEndeDatum - buchungBeginnDatum;
+    onFieldChanged({data: {fieldName, value}}) {
+        this.data[fieldName] = value;
+    }
 
-        return {
-            sperrzeitEnde: dateToTimeInputValue(sperrzeitEndeDatum),
-            beginn: dateToTimeInputValue(buchungBeginnDatum),
-            ende: dateToTimeInputValue(buchungEndeDatum),
-            dauer: millisToHhDotMm(buchungDauer),
-            gesamtDauerNetto: millisToHhDotMm(gesamtDauerNetto),
-            gesamtDauerBrutto: millisToHhDotMm(gesamtDauerBrutto)
-        };
+    appendDataTo(target) {
+        const einsatzTagDate = yyyyMmDdToDate(this.data.einsatzTag);
+        const einsatzStartDatum = dateWithTimeToDate(einsatzTagDate, this.data.einsatzBeginn);
+        const einsatzEndeDatum = dateWithTimeToDate(einsatzTagDate, this.data.einsatzEnde);
+        const ueblicherArbeitsbeginn = this.data.ueblicherArbeitsbeginn;
+        const arbeitBeginnDatum = dateWithTimeToDate(einsatzTagDate, this.data.arbeitBeginn);
+        const arbeitEndeDatum = dateWithTimeToDate(einsatzTagDate, this.data.arbeitEnde);
+        let arbeitDauer = 0;
+        if (arbeitBeginnDatum && arbeitEndeDatum) {
+            arbeitDauer = millisToHhDotMm(arbeitEndeDatum - arbeitBeginnDatum);
+        }
+        if (einsatzStartDatum && einsatzEndeDatum && ueblicherArbeitsbeginn) {
+            const {
+                sperrzeitEnde,
+                buchungBeginn,
+                buchungEnde,
+                buchungDauer,
+                einsatzDauer,
+                gesamtDauerNetto,
+                gesamtDauerBrutto
+            } = calculator.berechneBuchung(einsatzStartDatum,
+                einsatzEndeDatum,
+                ueblicherArbeitsbeginn,
+                hhDotMmtoMillis(arbeitDauer));
+            target.calculator = {
+                ...this.data,
+                sperrzeitEnde,
+                buchungBeginn,
+                buchungEnde,
+                buchungDauer,
+                einsatzDauer,
+                gesamtDauerBrutto,
+                gesamtDauerNetto,
+                arbeitDauer
+            };
+        } else {
+            target.calculator = {
+                ...this.data,
+                sperrzeitEnde: "",
+                buchungBeginn: "",
+                buchungEnde: "",
+                buchungDauer: "",
+                einsatzDauer: "",
+                gesamtDauerBrutto: "",
+                gesamtDauerNetto: "",
+                arbeitDauer: ""
+            };
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 export function zeroPadded(d) {
-    if (d === undefined) {
+    if (typeof d !== 'number' || isNaN(d)) {
         return d;
     }
 
