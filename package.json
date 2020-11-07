@@ -1,0 +1,15 @@
+{
+  "name": "cbuschka-bereitschaftsrechner",
+  "version": "1.0.0.dev0",
+  "description": "cbuschka-bereitschaftsrechner",
+  "engines": {
+    "node": ">=10.15.3"
+  },
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Hooray'"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
