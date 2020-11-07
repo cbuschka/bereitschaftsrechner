@@ -36,7 +36,6 @@ class Calculator {
             gesamtDauerNetto: millisToHhDotMm(gesamtDauerNetto),
             gesamtDauerBrutto: millisToHhDotMm(gesamtDauerBrutto)
         };
-        console.log("%o", result)
         return result;
     }
 }
