@@ -6,9 +6,9 @@
     "node": ">=10.15.3"
   },
   "private": true,
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
-    "build": "echo 'Hooray'"
+    "build": "mkdir -p public/ && rm -rf public/* && cp src/* public/"
   },
   "devDependencies": {},
   "dependencies": {}
