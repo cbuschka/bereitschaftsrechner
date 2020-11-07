@@ -66,6 +66,7 @@ export class App extends React.Component {
             <div className="App">
                 <Container tag="section">
                     <h1>Bereitschaftsrechner</h1>
+                    <p><small>(Alle Angaben ohne Gewähr!)</small></p>
                     <Form>
                         <h4>Einsatz</h4>
                         <div className="row">
