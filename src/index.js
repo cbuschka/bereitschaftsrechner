@@ -1,58 +1,8 @@
 import * as $ from 'jquery';
-import 'bootstrap/dist/css/bootstrap.css'
-
-function zeroPadded(d) {
-    if (d === undefined) {
-        return d;
-    }
-
-    if (d >= 0 && d < 10) {
-        return "0" + d;
-    }
-
-    return "" + d;
-}
-
-function max(a, b) {
-    if (a > b) {
-        return a;
-    }
-    return b;
-}
-
-function millisToHhDotMm(dauerInMillis) {
-    if (dauerInMillis === undefined) {
-        return undefined;
-    }
-
-    const minutes = zeroPadded(Math.floor((dauerInMillis / (1000 * 60)) % 60));
-    const hours = zeroPadded(Math.floor((dauerInMillis / (1000 * 60 * 60)) % 24));
-
-    return `${hours}:${minutes}`
-}
-
-function hhDotMmtoMillis(hhDotMm) {
-    if (hhDotMm === undefined) {
-        return undefined;
-    }
-
-    const result = /(\d+):(\d+)/.exec(hhDotMm);
-    return parseInt(result[1]) * 1000 * 60 * 60 + parseInt(result[2]) * 1000 * 60;
-}
-
-Date.prototype.toDateInputValue = (function () {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0, 10);
-});
-
-
-Date.prototype.toTimeInputValue = (function () {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(11, 16);
-});
-
+import 'bootstrap/dist/css/bootstrap.css';
+import './Date.js';
+import {max} from "./util";
+import {hhDotMmtoMillis, millisToHhDotMm} from "./timeconv";
 
 function berechneSperrzeitEndeDatum(einsatzEndeDatum) {
     return new Date(einsatzEndeDatum.getTime() + hhDotMmtoMillis("11:00"));
