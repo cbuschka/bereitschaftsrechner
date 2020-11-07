@@ -8,6 +8,7 @@ import {TimeOutput} from "./TimeOutput";
 import {changeField} from "./changeFieldAction";
 import {model} from "./model";
 import {MessagePanel} from "./MessagePanel";
+import './App.css';
 
 export class App extends React.Component {
 
@@ -63,8 +64,7 @@ export class App extends React.Component {
             einsatzMessages,
             sperrzeitEnde, arbeitBeginn, arbeitEnde, arbeitDauer,
             ueblicherArbeitsbeginn, ueblicherArbeitsbeginnMessages,
-            buchungBeginn, buchungEnde, buchungDauer,
-            gesamtDauerNetto, gesamtDauerBrutto
+            buchungBeginn, buchungEnde, buchungDauer
         } = this.state;
 
 
@@ -75,9 +75,9 @@ export class App extends React.Component {
                     <p><small>(Alle Angaben ohne Gewähr!)</small></p>
                     <Form>
                         <h4>Einsatz</h4>
-                        <div className="row">
+                        <div className="row well">
                             <div className="col col-4">
-                                <div className="form-group ">
+                                <div className="form-group">
                                     <label htmlFor="einsatzTag">Tag:</label>
                                     <DayInput id="einsatzTag" value={einsatzTag}
                                               onChange={this.onEinsatzTagChanged}/>
@@ -86,7 +86,7 @@ export class App extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <div className="form-group ">
+                                <div className="form-group">
                                     <label htmlFor="einsatzBeginn">Beginn:</label>
                                     <TimeInput id="einsatzBeginn" value={einsatzBeginn}
                                                onChange={this.onEinsatzBeginnChanged}/>
@@ -110,7 +110,7 @@ export class App extends React.Component {
                         <hr/>
                         <h4>Arbeit (nach dem Einsatz)</h4>
                         <div className="row">
-                            <div className="col-3">
+                            <div className="col-4">
                                 <div className="form-group">
                                     <label htmlFor="sperrzeitEnde">Sperrzeit-Ende:</label>
                                     <TimeOutput id="sperrzeitEnde" value={sperrzeitEnde}/>
@@ -142,7 +142,7 @@ export class App extends React.Component {
 
                         <hr/>
                         <div className="row">
-                            <div className="col-3">
+                            <div className="col-4">
                                 <div className="form-group">
                                     <label htmlFor="ueblicherArbeitsbeginn">Üblicher Arbeitsbeginn:</label>
                                     <TimeInput id="ueblicherArbeitsbeginn" value={ueblicherArbeitsbeginn}
@@ -172,20 +172,6 @@ export class App extends React.Component {
                                 <div className="form-group">
                                     <label htmlFor="buchungDauer">Dauer:</label>
                                     <DurationOutput value={buchungDauer} id="buchungDauer"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <div className="form-group">
-                                    <label htmlFor="gesamtDauerNetto">Gesamt-Dauer (ohne Pausen):</label>
-                                    <DurationOutput value={gesamtDauerNetto} id="gesamtDauerNetto"/>
-                                </div>
-                            </div>
-                            <div className="col">
-                                <div className="form-group">
-                                    <label htmlFor="gesamtDauerBrutto">Gesamt-Dauer (inkl. Pausen):</label>
-                                    <DurationOutput value={gesamtDauerBrutto} id="gesamtDauerBrutto"/>
                                 </div>
                             </div>
                         </div>
