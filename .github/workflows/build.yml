@@ -10,8 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Setup node
+      uses: actions/setup-node@v2-beta
+      with:
+        node-version: '10.15.3'
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Run yarn install
+      uses: borales/actions-yarn@v2.0.0
+      with:
+        cmd: install
+    - name: Run yarn build
+      uses: borales/actions-yarn@v2.0.0
+      with:
+        cmd: build
     - name: Deploy to gh-pages
       uses: peaceiris/actions-gh-pages@v3
       with:
